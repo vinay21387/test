@@ -1,0 +1,78 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class ArraySumTarget {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the array size: ");
+        int size = scanner.nextInt();
+
+        int[] array = new int[size];
+        System.out.println("Enter the array elements:");
+        for (int i = 0; i < size; i++) {
+            array[i] = scanner.nextInt();
+        }
+
+        System.out.print("Enter the target value: ");
+        int target = scanner.nextInt();
+
+        // Find pairs whose sum equals the target
+        List<int[]> result1 = findPairs(array, target);
+        System.out.println("First Combination for \"" + target + "\":");
+        printResult(result1);
+
+        // Merge the array into a single array and sort it in ascending order
+        int[] mergedArray = mergeAndSort(array);
+        System.out.println("Merged Array:");
+        System.out.println(Arrays.toString(mergedArray));
+
+        // Double the target value
+        int doubledTarget = target * 2;
+
+        // Find combinations in the merged array whose elements sum equals the doubled target
+        List<int[]> result2 = findCombinations(mergedArray, doubledTarget);
+        System.out.println("Second Combination for \"" + doubledTarget + "\":");
+        printResult(result2);
+    }
+
+    private static List<int[]> findPairs(int[] array, int target) {
+        List<int[]> result = new ArrayList<>();
+        for (int i = 0; i < array.length - 1; i++) {
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[i] + array[j] == target) {
+                    int[] pair = {array[i], array[j]};
+                    result.add(pair);
+                }
+            }
+        }
+        return result;
+    }
+
+    private static int[] mergeAndSort(int[] array) {
+        Arrays.sort(array);
+        return array;
+    }
+
+    private static List<int[]> findCombinations(int[] array, int target) {
+        List<int[]> result = new ArrayList<>();
+        for (int i = 0; i < array.length - 1; i++) {
+            for (int j = i + 1; j < array.length - 1; j++) {
+                for (int k = j + 1; k < array.length; k++) {
+                    if (array[i] + array[j] + array[k] == target) {
+                        int[] combination = {array[i], array[j], array[k]};
+                        result.add(combination);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private static void printResult(List<int[]> result) {
+        for (int[] combination : result) {
+            System.out.println(Arrays.toString(combination));
+        }
+    }
+}
